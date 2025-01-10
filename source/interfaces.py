@@ -12,7 +12,7 @@ class Ui:
 
     def __init__(self):
         # Carregando o layout principal 
-        self.window = self.reset_password_layout()
+        self.window = self.login_layout()
 
         # Validação de dados
         self.login = LoginValidation()
@@ -113,21 +113,22 @@ class Ui:
                     self.login.login_validation(value["-EMAIL-LOGIN-"],value['-PASSWORD-LOGIN-'])
 
                 case "-CADASTRAR-":
-                    self.register.register_validation(value["-NOME-"],value["-TELEFONE-"],value["-EMAIL-"],value["-SENHA-"])
+                    match self.register.register_validation(value["-NOME-"],value["-TELEFONE-"],value["-EMAIL-"],value["-SENHA-"]):
+                        case True:
+                            sg.Popup("Conta cadastrada com sucesso!")
 
                 case "-ENVIAR-EMAIL-DE-RECUPERAÇAO-DE-SENHA-":    
-                    self.email_recovery_password.email_recovery_password_validation(value["-EMAIL-DE-RECUPERAÇAO-DE-SENHA-"])
-
+                    match self.email_recovery_password.email_recovery_password_validation(value["-EMAIL-DE-RECUPERAÇAO-DE-SENHA-"]):
+                        case True:
+                            self.window.close()
+                            self.window = self.send_code_layout()           
+                
                 case "-RECUPERAR-SENHA-":
                     self.window.close()
                     self.window = self.email_recovery_password_layout()  
 
                 case "-ENVIAR-NOVA-SENHA-":
-                    self.reset_password.reset_password_validation(value["-PASSWORD-01-"],value["-PASSWORD-02-"])             
-
-                case "-ENVIAR-":
-                    self.window.close()
-                    self.window = self.send_code_layout()                
+                    self.reset_password.reset_password_validation(value["-PASSWORD-01-"],value["-PASSWORD-02-"])                             
 
                 case "-ALTERAR-SENHA-":
                     self.code.code_validation(value['-CODE-'])
@@ -137,7 +138,7 @@ class Ui:
 
         self.window.close()
 
-# Criando uma instancia da classe principal 
+# Criando um exemplo de instancia da classe principal 
 if __name__ == "__main__":
     ui = Ui()
     ui.main()

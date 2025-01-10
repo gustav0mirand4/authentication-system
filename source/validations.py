@@ -7,7 +7,7 @@ import re
 class Regex:
 
     def __init__(self):
-        self.name_regex = r"^[A-Za-záàâãéèêíïóôõöúçñ]+ [A-Za-záàâãéèêíïóôõöúçñ]+$"
+        self.name_regex = r"^[A-Za-záàâãéèêíïóôõöúçñ]+ [A-Za-záàâãéèêíïóôõöúçñ]+$" # Arrumar o regex de nome!
         self.phone_regex = r'^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$'
         self.email_regex = r"^[\.A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+\.[a-z]{3}(\.[a-z]{2})?$"
         self.password_regex = r'^[0-9A-Za-záàâãéèêíïóôõöúçñ"@#$%¨&*()-+={}\[\]~^,.]{4,}$'
@@ -74,6 +74,7 @@ class ResetPasswordValidation:
 
         else:
             return True
+
 
 
         
