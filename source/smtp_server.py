@@ -5,7 +5,7 @@ import random
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-# Gerador de código 
+# Gerador de código com 4 dígitos   
 class CodeGenerator:
     def __init__(self):
         self.char_list = "ABCDEFGHIJKLMNOPQRSUVXWYZ0123456789"
@@ -14,7 +14,7 @@ class CodeGenerator:
         chars = random.choices(self.char_list, k=4)
         new_chars = "".join(chars)
         return new_chars
-
+    
 # SMTP Server
 class SendEmail(CodeGenerator):
     def __init__(self, host, port):
@@ -23,10 +23,10 @@ class SendEmail(CodeGenerator):
         self.server = smtplib.SMTP(host, port) # Configure o host a porta do seu servidor de email
         self.email_menssage = MIMEMultipart()
 
-    def send_email(self, email_sender, email_recipient, password):
-        
         # Código gerado 
-        self.body = f"{CodeGenerator().code_generator()}"
+        #self.body = f"{CodeGenerator().code_generator()}"
+
+    def send_email(self, email_sender, email_recipient, password):
 
         # Altere os campos para configurar o email 
         self.email_menssage["From"] = email_sender # Email remetente 

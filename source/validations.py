@@ -2,6 +2,7 @@
 
 from PySimpleGUI import PopupError, Popup
 from hashlib import sha256
+from smtp_server import SendEmail, TestCode
 from database import InsertTable, SelectTable
 import re
 
@@ -74,7 +75,7 @@ class EmailRecoveryPasswordValidation:
             return True
 
 # Classe para validar o código enviado para o email dos usuário 
-class CodeValidation:
+class CodeValidation(TestCode):
     def __init__(self):
         self.code = Regex()
 
@@ -84,7 +85,7 @@ class CodeValidation:
             PopupError("Código Invalido!")
 
         else:
-            True
+            True 
 
 class ResetPasswordValidation:
     def __init__(self):
