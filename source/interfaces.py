@@ -1,17 +1,18 @@
-# Importações 
+# Importações
 
 import PySimpleGUI as sg
-from validations import (LoginValidation, 
-                        RegisterValidation, 
+from database import InsertTable
+from validations import (LoginValidation,
+                        RegisterValidation,
                         EmailRecoveryPasswordValidation,
                         CodeValidation,
                         ResetPasswordValidation)
 
-# Classe para a criação de layouts 
+# Classe para a criação de layouts
 class Ui:
 
     def __init__(self):
-        # Carregando o layout principal 
+        # Carregando o layout principal
         self.window = self.login_layout()
 
         # Validação de dados
@@ -42,19 +43,21 @@ class Ui:
 
     def register_layout(self):
 
-        # Layout de cadastro de usuário 
+        # Layout de cadastro de usuário
         layout = [
             [sg.Text("Cadastre sua conta",font=("Roboto Bold",13))],
             [sg.HSep()],
+            [sg.Radio("Masculino", group_id=1, default=True, key="-SEXO-"),
+             sg.Radio("Feminino", group_id=1)],
             [sg.Text("Nome:"),sg.Push(),sg.Input(key="-NOME-")],
-            [sg.Text("Telefone",size=5),sg.Input(key="-TELEFONE-"),sg.Push(),sg.Push()],
+            [sg.Text("Telefone"),sg.Input(key="-TELEFONE-",size=80)],
             [sg.Text("Email:"),sg.Push(),sg.Input(key="-EMAIL-")],
             [sg.Text("Senha:"),sg.Input(key="-SENHA-"),sg.Push()],
             [sg.Sizer(18,18)],
             [sg.Push(),sg.Button("Enviar",key="-CADASTRAR-"),sg.Button("Entrar",key="-TELA-DE-LOGIN-"),sg.Push()]
         ]
 
-        return sg.Window("Cadastro",size=(350,220),layout=layout)
+        return sg.Window("Cadastro",size=(400,240),layout=layout)
 
     def email_recovery_password_layout(self):
 
@@ -72,7 +75,7 @@ class Ui:
 
     def send_code_layout(self):
 
-        # Layout para enviar o código recebido no email do usuário 
+        # Layout para enviar o código recebido no email do usuário
         layout = [
             [sg.Text("Enviamos o código para o email <email-do-usuário>",pad=15)],
             [sg.Push(),sg.Text("Código:"),sg.Input(size=(20,20),key="-CODE-"),sg.Push()],
@@ -84,7 +87,7 @@ class Ui:
 
     def reset_password_layout(self):
 
-        # Layout para alterar a senha da conta do usuário 
+        # Layout para alterar a senha da conta do usuário
         layout = [
             [sg.Text("Digite sua nova senha",font=("Roboto Bold",13), pad=14)],
             [sg.Push(),sg.Text("Senha:"),sg.Push(),sg.Input(size=(29,29), key="-PASSWORD-01-")],
@@ -94,41 +97,44 @@ class Ui:
         ]
 
         return sg.Window("Cadastro",size=(350,210),layout=layout)
-        
 
-    # Função principal para carregas as janelas da aplicação 
+
+    # Função principal para carregas as janelas da aplicação
     def main(self):
         while True:
             event, value = self.window.read()
             match event:
                 case "-CADASTRAR":
-                    self.window.close() 
+                    self.window.close()
                     self.window = self.register_layout()
 
                 case "-TELA-DE-LOGIN-":
                     self.window.close()
                     self.window = self.login_layout()
-                
+
                 case "-ENTRAR-":
                     self.login.login_validation(value["-EMAIL-LOGIN-"],value['-PASSWORD-LOGIN-'])
 
                 case "-CADASTRAR-":
-                    match self.register.register_validation(value["-NOME-"],value["-TELEFONE-"],value["-EMAIL-"],value["-SENHA-"]):
-                        case True:
-                            sg.Popup("Conta cadastrada com sucesso!")
+                    self.register.register_validation(value["-SEXO-"],
+                                                        value["-NOME-"],
+                                                        value["-TELEFONE-"],
+                                                        value["-EMAIL-"],
+                                                        value["-SENHA-"])
+                        
 
-                case "-ENVIAR-EMAIL-DE-RECUPERAÇAO-DE-SENHA-":    
+                case "-ENVIAR-EMAIL-DE-RECUPERAÇAO-DE-SENHA-":
                     match self.email_recovery_password.email_recovery_password_validation(value["-EMAIL-DE-RECUPERAÇAO-DE-SENHA-"]):
                         case True:
                             self.window.close()
-                            self.window = self.send_code_layout()           
-                
+                            self.window = self.send_code_layout()
+
                 case "-RECUPERAR-SENHA-":
                     self.window.close()
-                    self.window = self.email_recovery_password_layout()  
+                    self.window = self.email_recovery_password_layout()
 
                 case "-ENVIAR-NOVA-SENHA-":
-                    self.reset_password.reset_password_validation(value["-PASSWORD-01-"],value["-PASSWORD-02-"])                             
+                    self.reset_password.reset_password_validation(value["-PASSWORD-01-"],value["-PASSWORD-02-"])
 
                 case "-ALTERAR-SENHA-":
                     self.code.code_validation(value['-CODE-'])
@@ -138,7 +144,7 @@ class Ui:
 
         self.window.close()
 
-# Criando um exemplo de instancia da classe principal 
+# Criando um exemplo de instancia da classe principal
 if __name__ == "__main__":
     ui = Ui()
     ui.main()
