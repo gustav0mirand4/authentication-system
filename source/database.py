@@ -36,6 +36,7 @@ class InsertTable:
         self.query._connect(f"""INSERT INTO users(sexo, name, phone, email, password) 
                                 VALUES ('{sexo}','{name}','{phone}','{email}','{password}')""")
 
+# Criando banco de dados e a tabela users
 db = ConnectDatabase()
 db._connect("""
             CREATE TABLE IF NOT EXISTS users(

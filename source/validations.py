@@ -26,7 +26,8 @@ class PasswordHash:
         hash_password = sha256(self.password).hexdigest()
         return hash_password
 
-class LoginValidation(SelectTable):
+# Classe para validação de login
+class LoginValidation(SelectTable, PasswordHash):
 
     def __init__(self):
         self.regex = Regex()
@@ -37,7 +38,11 @@ class LoginValidation(SelectTable):
             PopupError("Dados Invalidos!")
             
         else:
-            True
+            data_user = SelectTable().select_table(email)
+            if data_user[0][0] != email or data_user[0][1] != PasswordHash(password).encrypt():
+                PopupError("Senha ou Email Incorreto!")
+            else:
+                True
             
 
 # Classe para validação de registro do usuário 
