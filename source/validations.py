@@ -2,7 +2,7 @@
 
 from PySimpleGUI import PopupError, Popup
 from hashlib import sha256
-from database import InsertTable
+from database import InsertTable, SelectTable
 import re
 
 # Classe para validação dos dados da aplicação 
@@ -26,7 +26,7 @@ class PasswordHash:
         hash_password = sha256(self.password).hexdigest()
         return hash_password
 
-class LoginValidation:
+class LoginValidation(SelectTable):
 
     def __init__(self):
         self.regex = Regex()
@@ -37,7 +37,8 @@ class LoginValidation:
             PopupError("Dados Invalidos!")
             
         else:
-            return True
+            True
+            
 
 # Classe para validação de registro do usuário 
 class RegisterValidation(InsertTable, PasswordHash):
