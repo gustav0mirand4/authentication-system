@@ -1,7 +1,6 @@
 # Importações
 
 import PySimpleGUI as sg
-from database import InsertTable
 from validations import (LoginValidation,
                         RegisterValidation,
                         EmailRecoveryPasswordValidation,
@@ -10,10 +9,9 @@ from validations import (LoginValidation,
 
 # Classe para a criação de layouts
 class Ui:
-
     def __init__(self):
         # Carregando o layout principal
-        self.window = self.login_layout()
+        self.window = self.send_code_layout()
 
         # Validação de dados
         self.login = LoginValidation()

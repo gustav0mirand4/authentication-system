@@ -7,7 +7,6 @@ import re
 
 # Classe para validação dos dados da aplicação 
 class Regex:
-
     def __init__(self):
         
         # Expressões regulares
@@ -28,7 +27,6 @@ class PasswordHash:
 
 # Classe para validação de login
 class LoginValidation(SelectTable, PasswordHash):
-
     def __init__(self):
         self.regex = Regex()
 
@@ -47,7 +45,6 @@ class LoginValidation(SelectTable, PasswordHash):
 
 # Classe para validação de registro do usuário 
 class RegisterValidation(InsertTable, PasswordHash):
-
     def __init__(self):
         self.regex = Regex()        
 
@@ -67,7 +64,6 @@ class RegisterValidation(InsertTable, PasswordHash):
 
 # Classe para validação do email para recuperação de senha 
 class EmailRecoveryPasswordValidation:
-
     def __init__(self):
         self.email = Regex()
 
@@ -79,7 +75,6 @@ class EmailRecoveryPasswordValidation:
 
 # Classe para validar o código enviado para o email dos usuário 
 class CodeValidation:
-
     def __init__(self):
         self.code = Regex()
 
@@ -89,17 +84,15 @@ class CodeValidation:
             PopupError("Código Invalido!")
 
         else:
-            return True
+            True
 
 class ResetPasswordValidation:
-
     def __init__(self):
         self.password = Regex()
 
     def reset_password_validation(self, password_01, password_02):
         if re.search(self.password.password_regex, password_01) == None or re.search(self.password.password_regex, password_02) == None or password_01 != password_02:
             PopupError("Senha Invalida!")            
-
         else:
             return True
 
