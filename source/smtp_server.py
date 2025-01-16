@@ -23,10 +23,11 @@ class SendEmail(CodeGenerator):
         self.server = smtplib.SMTP(host, port) # Configure o host a porta do seu servidor de email
         self.email_menssage = MIMEMultipart()
 
-        # Código gerado 
-        #self.body = f"{CodeGenerator().code_generator()}"
 
     def send_email(self, email_sender, email_recipient, password):
+
+        # Código gerado 
+        self.body = f"{CodeGenerator().code_generator()}"
 
         # Altere os campos para configurar o email 
         self.email_menssage["From"] = email_sender # Email remetente 

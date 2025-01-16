@@ -1,6 +1,7 @@
 # Importações 
 
 import sqlite3 
+from smtp_server import CodeGenerator
 
 # Conector do banco de dados
 class ConnectDatabase:
@@ -35,8 +36,26 @@ class InsertTable:
     def insert_table(self, sexo, name, phone, email, password):
         self.query._connect(f"""INSERT INTO users(sexo, name, phone, email, password) 
                                 VALUES ('{sexo}','{name}','{phone}','{email}','{password}')""")
+        
+# Classe para deletar o código enviado para o usuário depois de 15 minutos 
+class QueryCode:
+    def __init__(self):
+        self.query = ConnectDatabase()
+
+    def insert_code(self, code):
+        self.query._connect(f"INSERT INTO code(code) VALUES ('{code}')")
+
+    # def delete_code(self, code):
+    #     self.query._connect(f"DELETE FROM code WHERE code='{code}'")
+    
 
 # Criando banco de dados e a tabela users
+
+"""
+! Problema: 
+O sistema precisa criar o banco de dados na pasta source ou na pasta raiz: resolver!!
+"""
+
 db = ConnectDatabase()
 db._connect("""
             CREATE TABLE IF NOT EXISTS users(
@@ -48,7 +67,8 @@ db._connect("""
             password INT UNIQUE NOT NULL
             )
                 """)
+# Criando tabela para armazena os códigos temporários de recuperação de senha
 
-
-
-
+db._connect("""CREATE TABLE IF NOT EXISTS code(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT(10) UNIQUE NOT NULL)""")

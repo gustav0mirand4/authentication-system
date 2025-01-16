@@ -2,9 +2,10 @@
 
 from PySimpleGUI import PopupError, Popup
 from hashlib import sha256
-from smtp_server import SendEmail, TestCode
-from database import InsertTable, SelectTable
+from database import InsertTable, SelectTable, QueryCode
+from smtp_server import CodeGenerator
 import re
+import time
 
 # Classe para validação dos dados da aplicação 
 class Regex:
@@ -42,7 +43,6 @@ class LoginValidation(SelectTable, PasswordHash):
                 PopupError("Senha ou Email Incorreto!")
             else:
                 True
-            
 
 # Classe para validação de registro do usuário 
 class RegisterValidation(InsertTable, PasswordHash):
@@ -64,7 +64,7 @@ class RegisterValidation(InsertTable, PasswordHash):
             Popup("Conta cadastrada com sucesso!")
 
 # Classe para validação do email para recuperação de senha 
-class EmailRecoveryPasswordValidation:
+class EmailRecoveryPasswordValidation(CodeGenerator, QueryCode):
     def __init__(self):
         self.email = Regex()
 
@@ -72,20 +72,26 @@ class EmailRecoveryPasswordValidation:
         if re.search(self.email.email_regex, email) == None:
             PopupError("Email Invalido!")
         else:
-            return True
+            match QueryCode().insert_code(CodeGenerator().code_generator()):
+                case None:
+                    return True
 
 # Classe para validar o código enviado para o email dos usuário 
-class CodeValidation(TestCode):
+class CodeValidation:
     def __init__(self):
         self.code = Regex()
 
-    def code_validation(self, code):
+    def stopwatch(self):
+        self.sec = int()
+        for self.sec in range(0, 900):
+            time.sleep(1)
 
+    def code_validation(self, code):
         if re.search(self.code.code_regex, code) == None:
             PopupError("Código Invalido!")
 
         else:
-            True 
+            return True
 
 class ResetPasswordValidation:
     def __init__(self):
@@ -96,10 +102,6 @@ class ResetPasswordValidation:
             PopupError("Senha Invalida!")            
         else:
             return True
-
-
-
-        
         
 
 

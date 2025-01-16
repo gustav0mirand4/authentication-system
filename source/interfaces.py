@@ -11,7 +11,7 @@ from validations import (LoginValidation,
 class Ui:
     def __init__(self):
         # Carregando o layout principal
-        self.window = self.send_code_layout()
+        self.window = self.email_recovery_password_layout()
 
         # Validação de dados
         self.login = LoginValidation()
