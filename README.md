@@ -1,6 +1,6 @@
 #### Sistema de cadastro
 
-Um pequeno sistema de autenticação de usuário com cadastro e recuperação de senha. Projeto feito para fins de estudos. 
+Um pequeno sistema de autenticação de usuário com cadastro e recuperação de senha usando `PySimpleGUI` e `sqlite3`. Projeto feito para fins de estudos. 
 
 #### Configurações 
 
