@@ -38,37 +38,35 @@ class InsertTable:
                                 VALUES ('{sexo}','{name}','{phone}','{email}','{password}')""")
         
 # Classe para deletar o código enviado para o usuário depois de 15 minutos 
-class QueryCode:
+class QueryCodeTable:
     def __init__(self):
         self.query = ConnectDatabase()
 
     def insert_code(self, code):
-        self.query._connect(f"INSERT INTO code(code) VALUES ('{code}')")
+        self.query._connect(f"INSERT INTO codes(code) VALUES ('{code}')")
 
-    # def delete_code(self, code):
-    #     self.query._connect(f"DELETE FROM code WHERE code='{code}'")
-    
+
+# Problema: O sistema precisa criar o banco de dados na pasta source ou na pasta raiz, resolver!!
 
 # Criando banco de dados e a tabela users
-
-"""
-! Problema: 
-O sistema precisa criar o banco de dados na pasta source ou na pasta raiz: resolver!!
-"""
-
 db = ConnectDatabase()
 db._connect("""
             CREATE TABLE IF NOT EXISTS users(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            users_id INTEGER NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
             sexo TEXT(10) NOT NULL,
             name TEXT NOT NULL,
-            phone INT UNIQUE NOT NULL,
+            phone INTEGER UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
-            password INT UNIQUE NOT NULL
+            password INTEGER UNIQUE NOT NULL
             )
                 """)
-# Criando tabela para armazena os códigos temporários de recuperação de senha
 
-db._connect("""CREATE TABLE IF NOT EXISTS code(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT(10) UNIQUE NOT NULL)""")
+# Criando tabela para armazena os códigos temporários de recuperação de senha
+db._connect("""CREATE TABLE IF NOT EXISTS codes(
+            code_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            code TEXT(10) UNIQUE NOT NULL,
+            fk_users_id INTEGER UNIQUE,
+            FOREIGN KEY (fk_users_id) REFERENCES users(users_id) 
+            )""")
+
+

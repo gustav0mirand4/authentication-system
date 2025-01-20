@@ -2,7 +2,7 @@
 
 from PySimpleGUI import PopupError, Popup
 from hashlib import sha256
-from database import InsertTable, SelectTable, QueryCode
+from database import InsertTable, SelectTable, QueryCodeTable
 from smtp_server import CodeGenerator
 import re
 import time
@@ -64,7 +64,7 @@ class RegisterValidation(InsertTable, PasswordHash):
             Popup("Conta cadastrada com sucesso!")
 
 # Classe para validação do email para recuperação de senha 
-class EmailRecoveryPasswordValidation(CodeGenerator, QueryCode):
+class EmailRecoveryPasswordValidation(CodeGenerator, QueryCodeTable):
     def __init__(self):
         self.email = Regex()
 
@@ -72,9 +72,9 @@ class EmailRecoveryPasswordValidation(CodeGenerator, QueryCode):
         if re.search(self.email.email_regex, email) == None:
             PopupError("Email Invalido!")
         else:
-            match QueryCode().insert_code(CodeGenerator().code_generator()):
-                case None:
-                    return True
+            QueryCodeTable().insert_code(CodeGenerator().code_generator())
+            return True
+                
 
 # Classe para validar o código enviado para o email dos usuário 
 class CodeValidation:
@@ -87,11 +87,11 @@ class CodeValidation:
             time.sleep(1)
 
     def code_validation(self, code):
-        if re.search(self.code.code_regex, code) == None:
+        if re.search(self.code.code_regex, code) == None or len(code) < 4:
             PopupError("Código Invalido!")
 
         else:
-            return True
+            ...
 
 class ResetPasswordValidation:
     def __init__(self):
